@@ -10,7 +10,7 @@
 The package go-template provides the easier way to use templates via template engine,
 supports multiple template engines with different file extensions.
 
-> It's a cross-framework means that it's 100% compatible with standard net/http, iris & fasthttp 
+> It's a cross-framework means that it's 100% compatible with standard net/http, iris & fasthttp
 
 
 6 template engines are supported:
@@ -35,7 +35,7 @@ $ go get -u github.com/kataras/go-template
 Examples
 ------------
 
-Run them from the [/examples](https://github.com/kataras/go-websocket/tree/master/examples) folder.
+Run them from the [/examples](https://github.com/kataras/go-template/tree/master/examples) folder.
 
 
 Otherwise, you can view examples via Iris example's repository [here](https://github.com/iris-contrib/examples/tree/master/template_engines).
