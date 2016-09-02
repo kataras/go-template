@@ -123,7 +123,6 @@ go-* packages
 | [go-websocket](https://github.com/kataras/go-websocket) | Setup easy and fast Websocket server and client with Go Programming Language
 | [go-errors](https://github.com/kataras/go-errors)      | Error handling
 | [go-events](https://github.com/kataras/go-events) | EventEmmiter for Go
-| [go-installer](https://github.com/kataras/go-installer) | Download & Install remote zipped files
 | [go-fs](https://github.com/kataras/go-fs) | Provides common utilities when working with files, either system files or web files.
 | [go-ssh](https://github.com/kataras/go-ssh) | SSH Server, build ssh interfaces, remote commands and remote cli with ease
 | [go-gzipwriter](https://github.com/kataras/go-gzipwriter) | Write gzip data to a io.Writer
