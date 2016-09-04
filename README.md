@@ -48,8 +48,53 @@ Docs
 Read the [godocs](https://godoc.org/github.com/kataras/go-template).
 
 
+**Iris Quick look**
 
-**Quick look**
+[Iris](https://github.com/kataras/iris) is the fastest web framework for Go, so far. It's based on [fasthttp](https://github.com/valyala/fasthttp), check that out if you didn't yet.
+
+[Examples](https://github.com/iris-contrib/examples/tree/master/template_engines) covers the big picture, this is just a small code overview*
+
+
+Make sure that you read & run the [iris-contrib/examples/template_engines](https://github.com/iris-contrib/examples/tree/master/template_engines) to cover the Iris + go-template part.
+
+```go
+package main
+
+import (
+	"github.com/kataras/go-template/amber"
+	"github.com/kataras/go-template/html"
+	"github.com/kataras/iris"
+)
+
+type mypage struct {
+	Title   string
+	Message string
+}
+
+func main() {
+
+	iris.UseTemplate(html.New()) // the Iris' default if no template engines are setted.
+
+	// add our second template engine with the same directory but with .amber file extension
+	iris.UseTemplate(amber.New(amber.Config{})).Directory("./templates", ".amber")
+
+	iris.Get("/render_html", func(ctx *iris.Context) {
+		ctx.RenderWithStatus(iris.StatusOK, "hiHTML.html", map[string]interface{}{"Name": "You!"})
+	})
+
+	iris.Get("/render_amber", func(ctx *iris.Context) {
+		ctx.MustRender("hiAMBER.amber", map[string]interface{}{"Name": "You!"})
+	})
+
+	println("Open a browser tab & go to localhost:8080/render_html  & localhost:8080/render_amber")
+	iris.Listen(":8080")
+}
+
+
+```
+
+
+**NET/HTTP Quick look**
 
 ```go
 // Package main uses the template.Mux here to simplify the steps
