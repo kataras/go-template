@@ -1,6 +1,6 @@
 package pug
 
-import "github.com/iris-contrib/template/html"
+import "github.com/go-template/html"
 
 // Pug is the 'jade', same configs as the html engine
 
