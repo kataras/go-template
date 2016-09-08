@@ -1,5 +1,6 @@
 <a href="https://travis-ci.org/kataras/go-template"><img src="https://img.shields.io/travis/kataras/go-template.svg?style=flat-square" alt="Build Status"></a>
 <a href="https://github.com/avelino/awesome-go"><img src="https://img.shields.io/badge/awesome-%E2%9C%93-ff69b4.svg?style=flat-square" alt="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"></a>
+<a href="http://goreportcard.com/report/kataras/go-template"><img src="https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square" alt="Platforms"></a>
 <a href="https://github.com/kataras/go-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/%20license-MIT%20%20License%20-E91E63.svg?style=flat-square" alt="License"></a>
 <a href="https://github.com/kataras/go-template/releases"><img src="https://img.shields.io/badge/%20release%20-%20v0.0.2-blue.svg?style=flat-square" alt="Releases"></a>
 <a href="#docs"><img src="https://img.shields.io/badge/%20docs-reference-5272B4.svg?style=flat-square" alt="Read me docs"></a>
@@ -160,23 +161,6 @@ func main() {
 
 > Note: All template engines have optional configuration which can be passed within $engine.New($engine.Config{})
 
-go-* packages
-------------
-
-| Name        | Description           
-| ------------------|:---------------------:|
-| [go-websocket](https://github.com/kataras/go-websocket) | Setup easy and fast Websocket server and client with Go Programming Language
-| [go-errors](https://github.com/kataras/go-errors)      | Error handling
-| [go-events](https://github.com/kataras/go-events) | EventEmmiter for Go
-| [go-fs](https://github.com/kataras/go-fs) | Provides common utilities when working with files, either system files or web files.
-| [go-ssh](https://github.com/kataras/go-ssh) | SSH Server, build ssh interfaces, remote commands and remote cli with ease
-| [go-gzipwriter](https://github.com/kataras/go-gzipwriter) | Write gzip data to a io.Writer
-| [go-mailer](https://github.com/kataras/go-mailer) | E-mail Sender, send rich mails with one call  
-| [rizla](https://github.com/kataras/rizla) | Monitor and live-reload of your Go App
-| [Q](https://github.com/kataras/q) | HTTP2 Web Framework, 100% compatible with net/http
-| [Iris](https://github.com/kataras/iris) | The fastest web framework. Built on top of fasthttp
-
-
 FAQ
 ------------
 
@@ -213,6 +197,13 @@ type (
 		// Funcs should returns the context or the funcs,
 		// this property is used in order to register the iris' helper funcs
 		Funcs() map[string]interface{}
+	}
+
+	// EngineRawExecutor is optional interface for the Engine
+	// used to receive and parse a raw template string instead of a filename
+	EngineRawExecutor interface {
+		// ExecuteRaw is super-simple function without options and funcs, it's not used widely
+		ExecuteRaw(src string, wr io.Writer, binding interface{}) error
 	}
 )
 
