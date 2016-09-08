@@ -149,3 +149,14 @@ func (e *Engine) ExecuteWriter(out io.Writer, name string, binding interface{}, 
 
 	return fmt.Errorf("[IRIS TEMPLATES] Template with name %s doesn't exists in the dir", name)
 }
+
+// ExecuteRaw receives, parse and executes raw source template contents
+// it's super-simple function without options and funcs, it's not used widely
+// implements the EngineRawExecutor interface
+func (e *Engine) ExecuteRaw(src string, wr io.Writer, binding interface{}) (err error) {
+	tmpl, err := amber.Compile(src, amber.DefaultOptions)
+	if err != nil {
+		return err
+	}
+	return tmpl.Execute(wr, binding)
+}

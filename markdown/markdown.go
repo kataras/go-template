@@ -145,3 +145,15 @@ func (e *Engine) ExecuteWriter(out io.Writer, name string, binding interface{}, 
 
 	return fmt.Errorf("[IRIS TEMPLATES] Template with name %s doesn't exists in the dir", name)
 }
+
+// ExecuteRaw receives, parse and executes raw source template contents
+// it's super-simple function without options and funcs, it's not used widely
+// implements the EngineRawExecutor interface
+func (e *Engine) ExecuteRaw(src string, wr io.Writer, binding interface{}) (err error) {
+	parsed := blackfriday.MarkdownCommon([]byte(src))
+	if e.Config.Sanitize {
+		parsed = bluemonday.UGCPolicy().SanitizeBytes(parsed)
+	}
+	_, err = wr.Write(parsed)
+	return
+}

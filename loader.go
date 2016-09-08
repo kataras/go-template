@@ -74,10 +74,7 @@ func (t *Loader) IsBinary() bool {
 	return t.AssetFn != nil && t.NamesFn != nil
 }
 
-var (
-	errMissingDirectoryOrAssets = errors.New("Missing Directory or Assets by binary for the template engine!")
-	errNoTemplateEngineForExt   = errors.New("No template engine found to manage '%s' extensions")
-)
+var errMissingDirectoryOrAssets = errors.New("Missing Directory or Assets by binary for the template engine!")
 
 // LoadEngine receives a template Engine and calls its LoadAssets or the LoadDirectory with the loader's locations
 func (t *Loader) LoadEngine(e Engine) error {

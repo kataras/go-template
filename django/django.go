@@ -112,7 +112,7 @@ func (p *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 	if err != nil {
 		return err
 	}*/
-	set := pongo2.NewSet("", pongo2.DefaultLoader) //I'm not 100% sure that works on assets but we will seee
+	set := pongo2.NewSet("", pongo2.DefaultLoader)
 	set.Globals = getPongoContext(p.Config.Globals)
 
 	if len(virtualDirectory) > 0 {
@@ -189,4 +189,17 @@ func (p *Engine) ExecuteWriter(out io.Writer, name string, binding interface{}, 
 	}
 
 	return fmt.Errorf("[IRIS TEMPLATES] Template with name %s doesn't exists in the dir", name)
+}
+
+// ExecuteRaw receives, parse and executes raw source template contents
+// it's super-simple function without options and funcs, it's not used widely
+// implements the EngineRawExecutor interface
+func (p *Engine) ExecuteRaw(src string, wr io.Writer, binding interface{}) (err error) {
+	set := pongo2.NewSet("", pongo2.DefaultLoader)
+	set.Globals = getPongoContext(p.Config.Globals)
+	tmpl, err := set.FromString(src)
+	if err != nil {
+		return err
+	}
+	return tmpl.ExecuteWriter(getPongoContext(binding), wr)
 }

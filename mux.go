@@ -1,6 +1,7 @@
 package template
 
 import (
+	"github.com/kataras/go-errors"
 	"github.com/valyala/bytebufferpool"
 	"io"
 	"path/filepath"
@@ -117,6 +118,8 @@ func (m *Mux) Load() error {
 	return m.Entries.LoadAll()
 }
 
+var errNoTemplateEngineForExt = errors.New("No template engine found for '%s'")
+
 // ExecuteWriter calls the correct template Engine's ExecuteWriter func
 func ExecuteWriter(out io.Writer, name string, binding interface{}, options ...map[string]interface{}) (err error) {
 	return defaultMux.ExecuteWriter(out, name, binding, options...)
@@ -150,6 +153,35 @@ func (m *Mux) ExecuteString(name string, binding interface{}, options ...map[str
 	out := m.buffer.Get()
 	defer m.buffer.Put(out)
 	err = m.ExecuteWriter(out, name, binding, options...)
+	if err == nil {
+		result = out.String()
+	}
+	return
+}
+
+var errNoTemplateEngineSupportsRawParsing = errors.New("Not found a valid template engine found which supports raw parser")
+
+// ExecuteRaw read moreon template.go:EngineRawParser
+// parse with the first valid EngineRawParser
+func (m *Mux) ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
+	if m == nil {
+		//file extension, but no template engine registered
+		return errNoTemplateEngineForExt.Format(src)
+	}
+
+	for _, e := range m.Entries {
+		if p, is := e.Engine.(EngineRawExecutor); is {
+			return p.ExecuteRaw(src, wr, binding)
+		}
+	}
+	return errNoTemplateEngineSupportsRawParsing
+}
+
+// ExecuteRawString receives raw template source contents and returns it's result as string
+func (m *Mux) ExecuteRawString(src string, binding interface{}) (result string, err error) {
+	out := m.buffer.Get()
+	defer m.buffer.Put(out)
+	err = m.ExecuteRaw(src, out, binding)
 	if err == nil {
 		result = out.String()
 	}

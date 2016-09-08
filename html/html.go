@@ -269,3 +269,21 @@ func (s *Engine) ExecuteWriter(out io.Writer, name string, binding interface{}, 
 
 	return s.Templates.ExecuteTemplate(out, name, binding)
 }
+
+// ExecuteRaw receives, parse and executes raw source template contents
+// it's super-simple function without options and funcs, it's not used widely
+// implements the EngineRawExecutor interface
+func (s *Engine) ExecuteRaw(src string, wr io.Writer, binding interface{}) (err error) {
+	if s.Middleware != nil {
+		src, err = s.Middleware("", src)
+		if err != nil {
+			return err
+		}
+	}
+
+	tmpl, err := template.New("").Parse(src)
+	if err != nil {
+		return err
+	}
+	return tmpl.Execute(wr, binding)
+}

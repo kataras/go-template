@@ -27,6 +27,13 @@ type (
 		// this property is used in order to register any optional helper funcs
 		Funcs() map[string]interface{}
 	}
+
+	// EngineRawExecutor is optional interface for the Engine
+	// used to receive and parse a raw template string instead of a filename
+	EngineRawExecutor interface {
+		// ExecuteRaw is super-simple function without options and funcs, it's not used widely
+		ExecuteRaw(src string, wr io.Writer, binding interface{}) error
+	}
 )
 
 // Below are just helpers for my two web frameworks which you can use also to your web app
