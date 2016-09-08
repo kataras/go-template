@@ -163,6 +163,12 @@ var errNoTemplateEngineSupportsRawParsing = errors.New("Not found a valid templa
 
 // ExecuteRaw read moreon template.go:EngineRawParser
 // parse with the first valid EngineRawParser
+func ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
+	return defaultMux.ExecuteRaw(src, wr, binding)
+}
+
+// ExecuteRaw read moreon template.go:EngineRawParser
+// parse with the first valid EngineRawParser
 func (m *Mux) ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
 	if m == nil {
 		//file extension, but no template engine registered
@@ -175,6 +181,11 @@ func (m *Mux) ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
 		}
 	}
 	return errNoTemplateEngineSupportsRawParsing
+}
+
+// ExecuteRawString receives raw template source contents and returns it's result as string
+func ExecuteRawString(src string, binding interface{}) (result string, err error) {
+	return defaultMux.ExecuteRawString(src, binding)
 }
 
 // ExecuteRawString receives raw template source contents and returns it's result as string
