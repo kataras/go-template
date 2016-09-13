@@ -11,10 +11,9 @@
 <a href="https://kataras.rocket.chat/channel/go-template"><img src="https://img.shields.io/badge/%20community-chat-00BCD4.svg?style=flat-square" alt="Chat"></a>
 <a href="https://golang.org"><img src="https://img.shields.io/badge/powered_by-Go-3362c2.svg?style=flat-square" alt="Built with GoLang"></a>
 
-The package go-template provides the easier way to use templates via template engine,
-supports multiple template engines with different file extensions.
+The package go-template provides an easier way to use templates via template engines. go-template supports multiple template engines with different file extensions.
 
-> It's a cross-framework means that it's 100% compatible with standard net/http, iris & fasthttp
+> It's a cross-framework, meaning that it's 100% compatible with the standard net/http, iris & fasthttp packages.
 
 
 6 template engines are supported:
@@ -25,7 +24,7 @@ supports multiple template engines with different file extensions.
 - pug(jade)
 - markdown
 
-It's already tested on production & used on [Iris](https://github.com/kataras/iris) and [Q](https://github.com/kataras/q) web framework.
+It's already tested in production & used on the web frameworks [Iris](https://github.com/kataras/iris) and [Q](https://github.com/kataras/q).
 
 Installation
 ------------
@@ -167,13 +166,13 @@ func main() {
 FAQ
 ------------
 
-- Q: Did this package works only with net/http ?
-- A: No, this package can work with [Iris](https://github.com/kataras/iris) & [fasthttp](https://github.com/valyala/fasthttp) too, look [here for more](https://github.com/kataras/iris/blob/master/template.go).
+- Q: Does this package only work with `net/http`?
+- A: No, this package can work with [Iris](https://github.com/kataras/iris) & [fasthttp](https://github.com/valyala/fasthttp) too, look [here for more info](https://github.com/kataras/iris/blob/master/template.go).
 
 
 
 - Q: How can I make my own template engine?
-- A: Simply, you have to implement only **3  functions**, for load and execute the templates. One optionally (**Funcs() map[string]interface{}**) which is used to register any SharedFuncs.
+- A: You have to simply implement only **3  functions** to load and execute the templates. One, optionally (**Funcs() map[string]interface{}**), which is used to register any SharedFuncs.
 	The simplest implementation, which you can look as example, is the Markdown Engine, which is located [here](https://github.com/kataras/go-template/tree/master/markdown).
 
 ```go
