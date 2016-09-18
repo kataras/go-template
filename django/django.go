@@ -61,6 +61,10 @@ func (p *Engine) LoadDirectory(dir string, extension string) (templateErr error)
 
 	set := pongo2.NewSet("", fsLoader)
 	set.Globals = getPongoContext(p.Config.Globals)
+
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	// Walk the supplied directory and compile any files that match our extension list.
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		// Fix same-extension-dirs bug: some dir might be named to: "users.tmpl", "local.html".
@@ -86,6 +90,7 @@ func (p *Engine) LoadDirectory(dir string, extension string) (templateErr error)
 					return err
 				}
 				name := filepath.ToSlash(rel)
+
 				p.templateCache[name], templateErr = set.FromString(string(buf))
 
 				if templateErr != nil && p.Config.DebugTemplates {
@@ -119,6 +124,9 @@ func (p *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 			virtualDirectory = virtualDirectory[1:]
 		}
 	}
+
+	p.mu.Lock()
+	defer p.mu.Unlock()
 
 	names := namesFn()
 	for _, path := range names {

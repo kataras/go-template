@@ -62,6 +62,8 @@ func (e *Engine) LoadDirectory(directory string, extension string) error {
 
 	templates, err := amber.CompileDir(directory, opt, amber.DefaultOptions) // this returns the map with stripped extension, we want extension so we copy the map
 	if err == nil {
+		e.mu.Lock()
+		defer e.mu.Unlock()
 		e.templateCache = make(map[string]*template.Template)
 		for k, v := range templates {
 			name := filepath.ToSlash(k + opt.Ext)
@@ -97,6 +99,10 @@ func (e *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 		}
 	}
 	amber.FuncMap = funcs //set the funcs
+
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
 	names := namesFn()
 
 	for _, path := range names {

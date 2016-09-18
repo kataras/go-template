@@ -37,6 +37,8 @@ func New(cfg ...Config) *Engine {
 
 // LoadDirectory builds the markdown templates
 func (e *Engine) LoadDirectory(dir string, extension string) error {
+	e.mu.Lock()
+	defer e.mu.Unlock()
 	var templateErr error
 	// Walk the supplied directory and compile any files that match our extension list.
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
@@ -91,6 +93,10 @@ func (e *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 			virtualDirectory = virtualDirectory[1:]
 		}
 	}
+
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
 	names := namesFn()
 	for _, path := range names {
 		if !strings.HasPrefix(path, virtualDirectory) {

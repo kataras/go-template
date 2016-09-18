@@ -68,7 +68,8 @@ func (e *Engine) LoadDirectory(dir string, extension string) error {
 
 	// the render works like {{ render "myfile.html" theContext.PartialContext}}
 	// instead of the html/template engine which works like {{ render "myfile.html"}} and accepts the parent binding, with handlebars we can't do that because of lack of runtime helpers (dublicate error)
-
+	e.mu.Lock()
+	defer e.mu.Unlock()
 	var templateErr error
 	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if info == nil || info.IsDir() {
@@ -120,6 +121,10 @@ func (e *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 		}
 	}
 	var templateErr error
+
+	e.mu.Lock()
+	defer e.mu.Unlock()
+
 	names := namesFn()
 	for _, path := range names {
 		if !strings.HasPrefix(path, virtualDirectory) {
