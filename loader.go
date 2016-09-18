@@ -1,9 +1,10 @@
 package template
 
 import (
-	"github.com/kataras/go-errors"
 	"os"
 	"path/filepath"
+
+	"github.com/kataras/go-errors"
 )
 
 var (
@@ -79,11 +80,10 @@ var errMissingDirectoryOrAssets = errors.New("Missing Directory or Assets by bin
 // LoadEngine receives a template Engine and calls its LoadAssets or the LoadDirectory with the loader's locations
 func (t *Loader) LoadEngine(e Engine) error {
 	if t.IsBinary() {
-		e.LoadAssets(t.Dir, t.Extension, t.AssetFn, t.NamesFn)
+		return e.LoadAssets(t.Dir, t.Extension, t.AssetFn, t.NamesFn)
 	} else if t.Dir != "" {
-		e.LoadDirectory(t.Dir, t.Extension)
-	} else {
-		return errMissingDirectoryOrAssets
+		return e.LoadDirectory(t.Dir, t.Extension)
 	}
-	return nil
+	return errMissingDirectoryOrAssets
+
 }

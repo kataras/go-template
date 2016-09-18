@@ -11,5 +11,5 @@ package template
 
 const (
 	// Version current version number
-	Version = "0.0.2"
+	Version = "0.0.3"
 )

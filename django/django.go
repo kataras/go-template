@@ -85,10 +85,6 @@ func (p *Engine) LoadDirectory(dir string, extension string) (templateErr error)
 					templateErr = err
 					return err
 				}
-				if err != nil {
-					templateErr = err
-					return err
-				}
 				name := filepath.ToSlash(rel)
 				p.templateCache[name], templateErr = set.FromString(string(buf))
 
