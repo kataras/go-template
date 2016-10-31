@@ -4,9 +4,9 @@
 package main
 
 import (
-	"gopkg.in/kataras/go-template.v0"
-	"gopkg.in/kataras/go-template.v0/amber"
-	"gopkg.in/kataras/go-template.v0/html"
+	"github.com/kataras/go-template"
+	"github.com/kataras/go-template/amber"
+	"github.com/kataras/go-template/html"
 	"net/http"
 )
 

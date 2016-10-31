@@ -1,9 +1,9 @@
 package main
 
 import (
-	"gopkg.in/kataras/go-template.v0/amber"
-	"gopkg.in/kataras/go-template.v0/html"
-	"gopkg.in/kataras/iris.v4"
+	"github.com/kataras/go-template/amber"
+	"github.com/kataras/go-template/html"
+	"github.com/kataras/iris"
 )
 
 type mypage struct {

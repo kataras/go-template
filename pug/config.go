@@ -1,6 +1,6 @@
 package pug
 
-import "gopkg.in/kataras/go-template.v0/html"
+import "github.com/kataras/go-template/html"
 
 // Pug is the 'jade', same configs as the html engine
 
