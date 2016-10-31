@@ -2,8 +2,8 @@
 package main
 
 import (
-	"github.com/kataras/go-template"
-	"github.com/kataras/go-template/html"
+	"gopkg.in/kataras/go-template.v0"
+	"gopkg.in/kataras/go-template.v0/html"
 	"net/http"
 )
 
