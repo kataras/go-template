@@ -5,8 +5,8 @@
 <a href="https://travis-ci.org/kataras/go-template"><img src="https://img.shields.io/travis/kataras/go-template.svg?style=flat-square" alt="Build Status"></a>
 <a href="https://github.com/avelino/awesome-go"><img src="https://img.shields.io/badge/awesome-%E2%9C%93-ff69b4.svg?style=flat-square" alt="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg"></a>
 <a href="http://goreportcard.com/report/kataras/go-template"><img src="https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square" alt="Report card"></a>
-<a href="https://github.com/kataras/go-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/%20license-MIT%20%20License%20-E91E63.svg?style=flat-square" alt="License"></a>
-<a href="https://github.com/kataras/go-template/releases"><img src="https://img.shields.io/badge/%20release%20-%20v0.0.3-blue.svg?style=flat-square" alt="Releases"></a>
+<a href="https://gopkg.in/kataras/go-template.v0/blob/master/LICENSE"><img src="https://img.shields.io/badge/%20license-MIT%20%20License%20-E91E63.svg?style=flat-square" alt="License"></a>
+<a href="https://gopkg.in/kataras/go-template.v0/releases"><img src="https://img.shields.io/badge/%20release%20-%20v0.0.3-blue.svg?style=flat-square" alt="Releases"></a>
 <a href="#docs"><img src="https://img.shields.io/badge/%20docs-reference-5272B4.svg?style=flat-square" alt="Read me docs"></a>
 <a href="https://kataras.rocket.chat/channel/go-template"><img src="https://img.shields.io/badge/%20community-chat-00BCD4.svg?style=flat-square" alt="Chat"></a>
 <a href="https://golang.org"><img src="https://img.shields.io/badge/powered_by-Go-3362c2.svg?style=flat-square" alt="Built with GoLang"></a>
@@ -32,14 +32,14 @@ Installation
 The only requirement is the [Go Programming Language](https://golang.org/dl), at least v1.7.
 
 ```bash
-$ go get -u github.com/kataras/go-template
+$ go get -u gopkg.in/kataras/go-template.v0
 ```
 
 
 Examples
 ------------
 
-Run them from the [/examples](https://github.com/kataras/go-template/tree/master/examples) folder.
+Run them from the [/examples](https://gopkg.in/kataras/go-template.v0/tree/master/examples) folder.
 
 
 Otherwise, you can view examples via Iris example's repository [here](https://github.com/iris-contrib/examples/tree/master/template_engines).
@@ -49,7 +49,7 @@ Read the [kataras/iris/template.go](https://github.com/kataras/iris/blob/master/
 Docs
 ------------
 
-Read the [godocs](https://godoc.org/github.com/kataras/go-template).
+Read the [godocs](https://godoc.org/gopkg.in/kataras/go-template.v0).
 
 
 **Iris Quick look**
@@ -65,9 +65,9 @@ Make sure that you read & run the [iris-contrib/examples/template_engines](https
 package main
 
 import (
-	"github.com/kataras/go-template/amber"
-	"github.com/kataras/go-template/html"
-	"github.com/kataras/iris"
+	"gopkg.in/kataras/go-template.v0/amber"
+	"gopkg.in/kataras/go-template.v0/html"
+	"gopkg.in/kataras/iris.v4"
 )
 
 type mypage struct {
@@ -107,9 +107,9 @@ func main() {
 package main
 
 import (
-	"github.com/kataras/go-template"
-	"github.com/kataras/go-template/amber"
-	"github.com/kataras/go-template/html"
+	"gopkg.in/kataras/go-template.v0"
+	"gopkg.in/kataras/go-template.v0/amber"
+	"gopkg.in/kataras/go-template.v0/html"
 	"net/http"
 )
 
@@ -174,7 +174,7 @@ FAQ
 
 - Q: How can I make my own template engine?
 - A: Simply, you have to implement only **3  functions**, for load and execute the templates. One optionally (**Funcs() map[string]interface{}**) which is used to register any SharedFuncs.
-	The simplest implementation, which you can look as example, is the Markdown Engine, which is located [here](https://github.com/kataras/go-template/tree/master/markdown).
+	The simplest implementation, which you can look as example, is the Markdown Engine, which is located [here](https://gopkg.in/kataras/go-template.v0/tree/master/markdown).
 
 ```go
 
@@ -212,7 +212,7 @@ type (
 
 ```
 
-Explore [these questions](https://github.com/kataras/go-template/issues?go-template=label%3Aquestion) or navigate to the [community chat][Chat].
+Explore [these questions](https://gopkg.in/kataras/go-template.v0/issues?go-template=label%3Aquestion) or navigate to the [community chat][Chat].
 
 Versioning
 ------------
@@ -243,9 +243,9 @@ License can be found [here](LICENSE).
 [Travis Widget]: https://img.shields.io/travis/kataras/go-template.svg?style=flat-square
 [Travis]: http://travis-ci.org/kataras/go-template
 [License Widget]: https://img.shields.io/badge/license-MIT%20%20License%20-E91E63.svg?style=flat-square
-[License]: https://github.com/kataras/go-template/blob/master/LICENSE
+[License]: https://gopkg.in/kataras/go-template.v0/blob/master/LICENSE
 [Release Widget]: https://img.shields.io/badge/release-v0.0.3-blue.svg?style=flat-square
-[Release]: https://github.com/kataras/go-template/releases
+[Release]: https://gopkg.in/kataras/go-template.v0/releases
 [Chat Widget]: https://img.shields.io/badge/community-chat-00BCD4.svg?style=flat-square
 [Chat]: https://kataras.rocket.chat/channel/go-template
 [ChatMain]: https://kataras.rocket.chat/channel/go-template
