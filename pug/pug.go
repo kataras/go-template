@@ -3,7 +3,7 @@ package pug
 
 import (
 	"github.com/Joker/jade"
-	"github.com/kataras/go-template/html"
+	"gopkg.in/kataras/go-template.v0"
 )
 
 // New creates and returns the Pug template engine
