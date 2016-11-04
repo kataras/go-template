@@ -118,7 +118,10 @@ func (m *Mux) Load() error {
 	return m.Entries.LoadAll()
 }
 
-var errNoTemplateEngineForExt = errors.New("No template engine found for '%s'")
+var (
+	errNoTemplateEngineForExt = errors.New("No template engine found for '%s'")
+	errTemplateNotFound       = errors.New("Template %s was not found")
+)
 
 // ExecuteWriter calls the correct template Engine's ExecuteWriter func
 func ExecuteWriter(out io.Writer, name string, binding interface{}, options ...map[string]interface{}) (err error) {
@@ -133,6 +136,9 @@ func (m *Mux) ExecuteWriter(out io.Writer, name string, binding interface{}, opt
 	}
 
 	entry := m.Entries.Find(name)
+	if entry == nil {
+		return errTemplateNotFound.Format(name)
+	}
 
 	if m.Reload {
 		if err = entry.LoadEngine(); err != nil {
