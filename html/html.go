@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 const (
@@ -22,6 +23,7 @@ type (
 		Config     Config
 		Middleware func(name string, contents string) (string, error)
 		Templates  *template.Template
+		mu         sync.Mutex
 	}
 )
 
@@ -105,12 +107,14 @@ func (s *Engine) LoadDirectory(dir string, extension string) error {
 						templateErr = err
 						return err
 					}
-
+					s.mu.Lock()
 					// Add our funcmaps.
 					if s.Config.Funcs != nil {
 						tmpl.Funcs(s.Config.Funcs)
 					}
+
 					tmpl.Funcs(emptyFuncs).Parse(contents)
+					s.mu.Unlock()
 				}
 			}
 
