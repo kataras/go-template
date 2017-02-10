@@ -109,6 +109,10 @@ func UseFuncMap(funcMap map[string]interface{}) *Mux {
 //
 // Should be called not called after Load.
 func (m *Mux) UseFuncMap(funcMap map[string]interface{}) *Mux {
+	if funcMap == nil {
+		return m
+	}
+
 	for k, v := range m.SharedFuncs {
 		m.SharedFuncs[k] = v
 	}
