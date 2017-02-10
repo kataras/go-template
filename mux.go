@@ -109,7 +109,7 @@ func UseFuncMap(funcMap map[string]interface{}) *Mux {
 //
 // Should be called not called after Load.
 func (m *Mux) UseFuncMap(funcMap map[string]interface{}) *Mux {
-	if funcMap == nil {
+	if len(funcMap) == 0 {
 		return m
 	}
 
@@ -120,23 +120,40 @@ func (m *Mux) UseFuncMap(funcMap map[string]interface{}) *Mux {
 	// if template engine is already added (but not loaded)
 	// then it's valid to add these funcs there.
 	for i, n := 0, len(m.Entries); i < n; i++ {
-		entry := m.Entries[i]
 		// add the shared  funcs if template engine supports funcs.
-		m.setSharedFuncs(entry)
+		m.SetFuncMapToEngine(funcMap, m.Entries[i].Engine)
 	}
 
 	return m
 }
 
-func (m *Mux) setSharedFuncs(e *Entry) {
+// SetFuncMapToEngine sets or overrides a specific func map to a specific template engine
+// SharedFuncs stays untouched here.
+//
+// Call UseFuncMap if you want to set SharedFuncs and be applied
+// to all registered and future template engines registrations.
+func SetFuncMapToEngine(funcMap map[string]interface{}, e Engine) *Mux {
+	return DefaultMux.SetFuncMapToEngine(funcMap, e)
+}
+
+// SetFuncMapToEngine sets or overrides a specific func map to a specific template engine
+// SharedFuncs stays untouched here.
+//
+// Call UseFuncMap if you want to set SharedFuncs and be applied
+// to all registered and future template engines registrations.
+func (m *Mux) SetFuncMapToEngine(funcMap map[string]interface{}, e Engine) *Mux {
+	if len(funcMap) == 0 {
+		return m
+	}
 	// add the shared  funcs if template engine supports funcs.
-	if funcer, ok := e.Engine.(EngineFuncs); ok {
-		if funcer.Funcs() != nil && m.SharedFuncs != nil {
-			for k, v := range m.SharedFuncs {
+	if funcer, ok := e.(EngineFuncs); ok {
+		if funcer.Funcs() != nil {
+			for k, v := range funcMap {
 				funcer.Funcs()[k] = v
 			}
 		}
 	}
+	return m
 }
 
 // AddEngine adds but not loads a template engine, returns the entry's Loader
@@ -146,10 +163,11 @@ func AddEngine(e Engine) *Loader {
 
 // AddEngine adds but not loads a template engine, returns the entry's Loader
 func (m *Mux) AddEngine(e Engine) *Loader {
+	// add the shared  funcs
+	m.SetFuncMapToEngine(m.SharedFuncs, e)
 
 	entry := &Entry{Engine: e, Loader: NewLoader()}
-	// add the shared  funcs
-	m.setSharedFuncs(entry)
+
 	m.Entries = append(m.Entries, entry)
 	// returns the entry's Loader(pointer)
 	return entry.Loader
