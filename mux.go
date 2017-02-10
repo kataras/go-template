@@ -80,11 +80,59 @@ var DefaultMux = NewMux()
 // the registry finds the correct template engine and executes the template
 // so you can use and render a template file by it's file extension
 func NewMux(sharedFuncs ...map[string]interface{}) *Mux {
-	m := &Mux{Reload: false, Entries: Entries{}, buffer: &bytebufferpool.Pool{}}
+	var funcs map[string]interface{}
 	if len(sharedFuncs) > 0 {
-		m.SharedFuncs = sharedFuncs[0]
+		funcs = sharedFuncs[0]
+	} else {
+		funcs = make(map[string]interface{}, 0)
+	}
+
+	m := &Mux{
+		Entries:     Entries{},
+		SharedFuncs: funcs,
+		Reload:      false,
+		buffer:      &bytebufferpool.Pool{},
 	}
 	return m
+}
+
+// UseFuncMap adds shared template funcs to the Mux
+// these funcs are applied to all template engines.
+//
+// Should be called not called after Load.
+func UseFuncMap(funcMap map[string]interface{}) *Mux {
+	return DefaultMux.UseFuncMap(funcMap)
+}
+
+// UseFuncMap adds shared template funcs to the Mux
+// these funcs are applied to all template engines
+//
+// Should be called not called after Load.
+func (m *Mux) UseFuncMap(funcMap map[string]interface{}) *Mux {
+	for k, v := range m.SharedFuncs {
+		m.SharedFuncs[k] = v
+	}
+
+	// if template engine is already added (but not loaded)
+	// then it's valid to add these funcs there.
+	for i, n := 0, len(m.Entries); i < n; i++ {
+		entry := m.Entries[i]
+		// add the shared  funcs if template engine supports funcs.
+		m.setSharedFuncs(entry)
+	}
+
+	return m
+}
+
+func (m *Mux) setSharedFuncs(e *Entry) {
+	// add the shared  funcs if template engine supports funcs.
+	if funcer, ok := e.Engine.(EngineFuncs); ok {
+		if funcer.Funcs() != nil && m.SharedFuncs != nil {
+			for k, v := range m.SharedFuncs {
+				funcer.Funcs()[k] = v
+			}
+		}
+	}
 }
 
 // AddEngine adds but not loads a template engine, returns the entry's Loader
@@ -95,15 +143,9 @@ func AddEngine(e Engine) *Loader {
 // AddEngine adds but not loads a template engine, returns the entry's Loader
 func (m *Mux) AddEngine(e Engine) *Loader {
 
-	// add the shared  funcs
-	if funcer, ok := e.(EngineFuncs); ok {
-		if funcer.Funcs() != nil && m.SharedFuncs != nil {
-			for k, v := range m.SharedFuncs {
-				funcer.Funcs()[k] = v
-			}
-		}
-	}
 	entry := &Entry{Engine: e, Loader: NewLoader()}
+	// add the shared  funcs
+	m.setSharedFuncs(entry)
 	m.Entries = append(m.Entries, entry)
 	// returns the entry's Loader(pointer)
 	return entry.Loader
