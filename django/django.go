@@ -1,14 +1,13 @@
 package django
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"fmt"
 
 	"github.com/flosch/pongo2"
 )

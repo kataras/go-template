@@ -4,10 +4,11 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/kataras/go-template"
 	"github.com/kataras/go-template/amber"
 	"github.com/kataras/go-template/html"
-	"net/http"
 )
 
 type mypage struct {

@@ -19,11 +19,11 @@ type (
 	Loader struct {
 		Dir       string
 		Extension string
-		// AssetFn and NamesFn used when files are distrubuted inside the app executable
+		// AssetFn and NamesFn used when files are distributed inside the app executable
 		AssetFn func(name string) ([]byte, error)
 		NamesFn func() []string
 	}
-	// BinaryLoader optionally, called after EngineLocation's Directory, used when files are distrubuted inside the app executable
+	// BinaryLoader optionally, called after EngineLocation's Directory, used when files are distributed inside the app executable
 	// sets the AssetFn and NamesFn
 	BinaryLoader struct {
 		*Loader
@@ -53,7 +53,7 @@ func (t *Loader) Directory(dir string, fileExtension string) *BinaryLoader {
 	return &BinaryLoader{Loader: t}
 }
 
-// Binary optionally, called after Loader.Directory, used when files are distrubuted inside the app executable
+// Binary optionally, called after Loader.Directory, used when files are distributed inside the app executable
 // sets the AssetFn and NamesFn
 func (t *BinaryLoader) Binary(assetFn func(name string) ([]byte, error), namesFn func() []string) {
 	if assetFn == nil || namesFn == nil {
@@ -75,7 +75,7 @@ func (t *Loader) IsBinary() bool {
 	return t.AssetFn != nil && t.NamesFn != nil
 }
 
-var errMissingDirectoryOrAssets = errors.New("Missing Directory or Assets by binary for the template engine!")
+var errMissingDirectoryOrAssets = errors.New("missing Directory or Assets by binary for the template engine")
 
 // LoadEngine receives a template Engine and calls its LoadAssets or the LoadDirectory with the loader's locations
 func (t *Loader) LoadEngine(e Engine) error {

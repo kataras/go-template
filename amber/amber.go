@@ -1,12 +1,11 @@
 package amber
 
 import (
-	"html/template"
-	"strings"
-
 	"fmt"
+	"html/template"
 	"io"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/eknkc/amber"

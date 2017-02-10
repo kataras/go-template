@@ -1,10 +1,11 @@
 package template
 
 import (
-	"github.com/kataras/go-errors"
-	"github.com/valyala/bytebufferpool"
 	"io"
 	"path/filepath"
+
+	"github.com/kataras/go-errors"
+	"github.com/valyala/bytebufferpool"
 )
 
 type (
@@ -68,7 +69,9 @@ func (entries Entries) Find(filename string) *Entry {
 	return nil
 }
 
-var defaultMux = NewMux()
+// DefaultMux is the default template mux
+// use that to share template engines across multiple sources in the same app.
+var DefaultMux = NewMux()
 
 // NewMux returns a new Mux
 // Mux is an optional feature, used when you want to use multiple template engines
@@ -86,7 +89,7 @@ func NewMux(sharedFuncs ...map[string]interface{}) *Mux {
 
 // AddEngine adds but not loads a template engine, returns the entry's Loader
 func AddEngine(e Engine) *Loader {
-	return defaultMux.AddEngine(e)
+	return DefaultMux.AddEngine(e)
 }
 
 // AddEngine adds but not loads a template engine, returns the entry's Loader
@@ -109,7 +112,7 @@ func (m *Mux) AddEngine(e Engine) *Loader {
 // Load loads all template engines entries, returns the first error
 // it just calls and returns the Entries.LoadALl
 func Load() error {
-	return defaultMux.Load()
+	return DefaultMux.Load()
 }
 
 // Load loads all template engines entries, returns the first error
@@ -125,7 +128,7 @@ var (
 
 // ExecuteWriter calls the correct template Engine's ExecuteWriter func
 func ExecuteWriter(out io.Writer, name string, binding interface{}, options ...map[string]interface{}) (err error) {
-	return defaultMux.ExecuteWriter(out, name, binding, options...)
+	return DefaultMux.ExecuteWriter(out, name, binding, options...)
 }
 
 // ExecuteWriter calls the correct template Engine's ExecuteWriter func
@@ -151,7 +154,7 @@ func (m *Mux) ExecuteWriter(out io.Writer, name string, binding interface{}, opt
 
 // ExecuteString executes a template from a specific template engine and returns its contents result as string, it doesn't renders
 func ExecuteString(name string, binding interface{}, options ...map[string]interface{}) (result string, err error) {
-	return defaultMux.ExecuteString(name, binding, options...)
+	return DefaultMux.ExecuteString(name, binding, options...)
 }
 
 // ExecuteString executes a template from a specific template engine and returns its contents result as string, it doesn't renders
@@ -170,7 +173,7 @@ var errNoTemplateEngineSupportsRawParsing = errors.New("Not found a valid templa
 // ExecuteRaw read moreon template.go:EngineRawParser
 // parse with the first valid EngineRawParser
 func ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
-	return defaultMux.ExecuteRaw(src, wr, binding)
+	return DefaultMux.ExecuteRaw(src, wr, binding)
 }
 
 // ExecuteRaw read moreon template.go:EngineRawParser
@@ -191,7 +194,7 @@ func (m *Mux) ExecuteRaw(src string, wr io.Writer, binding interface{}) error {
 
 // ExecuteRawString receives raw template source contents and returns it's result as string
 func ExecuteRawString(src string, binding interface{}) (result string, err error) {
-	return defaultMux.ExecuteRawString(src, binding)
+	return DefaultMux.ExecuteRawString(src, binding)
 }
 
 // ExecuteRawString receives raw template source contents and returns it's result as string

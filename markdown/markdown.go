@@ -1,14 +1,13 @@
 package markdown
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"fmt"
 
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
