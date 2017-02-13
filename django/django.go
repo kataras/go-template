@@ -40,7 +40,7 @@ func New(cfg ...Config) *Engine {
 		c.Globals = make(map[string]interface{}, 0)
 	}
 	if c.Filters == nil {
-		c.Filters = make(map[string]pongo2.FilterFunction, 0)
+		c.Filters = make(map[string]FilterFunction, 0)
 	}
 
 	return &Engine{Config: c, templateCache: make(map[string]*pongo2.Template)}
@@ -49,6 +49,22 @@ func New(cfg ...Config) *Engine {
 // Funcs should returns the helper funcs
 func (p *Engine) Funcs() map[string]interface{} {
 	return p.Config.Globals
+}
+
+// this exists because of moving the pongo2 to the vendors without conflictitions if users
+// wants to register pongo2 filters they can use this django.FilterFunc to do so.
+func (p *Engine) convertFilters() map[string]pongo2.FilterFunction {
+	filters := make(map[string]pongo2.FilterFunction, len(p.Config.Filters))
+	for k, v := range p.Config.Filters {
+		func(filterName string, filterFunc FilterFunction) {
+			fn := pongo2.FilterFunction(func(in *pongo2.Value, param *pongo2.Value) (*pongo2.Value, *pongo2.Error) {
+				theOut, theErr := filterFunc((*Value)(in), (*Value)(param))
+				return (*pongo2.Value)(theOut), (*pongo2.Error)(theErr)
+			})
+			filters[filterName] = fn
+		}(k, v)
+	}
+	return filters
 }
 
 // LoadDirectory builds the templates
@@ -60,6 +76,12 @@ func (p *Engine) LoadDirectory(dir string, extension string) (templateErr error)
 
 	set := pongo2.NewSet("", fsLoader)
 	set.Globals = getPongoContext(p.Config.Globals)
+
+	// set the filters
+	filters := p.convertFilters()
+	for filterName, filterFunc := range filters {
+		pongo2.RegisterFilter(filterName, filterFunc)
+	}
 
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -114,6 +136,12 @@ func (p *Engine) LoadAssets(virtualDirectory string, virtualExtension string, as
 	}*/
 	set := pongo2.NewSet("", pongo2.DefaultLoader)
 	set.Globals = getPongoContext(p.Config.Globals)
+
+	// set the filters
+	filters := p.convertFilters()
+	for filterName, filterFunc := range filters {
+		pongo2.RegisterFilter(filterName, filterFunc)
+	}
 
 	if len(virtualDirectory) > 0 {
 		if virtualDirectory[0] == '.' { // first check for .wrong
