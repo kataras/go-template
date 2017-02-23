@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/kataras/go-template/amber"
-	"github.com/kataras/go-template/html"
-	"github.com/kataras/iris"
+	"gopkg.in/kataras/iris.v6"
+	"gopkg.in/kataras/iris.v6/adaptors/httprouter"
+	"gopkg.in/kataras/iris.v6/adaptors/view"
 )
 
 type mypage struct {
@@ -11,27 +11,28 @@ type mypage struct {
 	Message string
 }
 
-// Iris examples covers the most part, including all 6 template engines and their configurations:
-// https://github.com/iris-contrib/examples/tree/master/template_engines
-
 func main() {
+	app := iris.New()
+	app.Adapt(iris.DevLogger())
+	app.Adapt(httprouter.New())
 
-	iris.UseTemplate(html.New()) // the Iris' default if no template engines are setted.
+	// the html engine on ./templates folder compile all *.html files
+	app.Adapt(view.HTML("./templates", ".html"))
 
 	// add our second template engine with the same directory but with .amber file extension
-	iris.UseTemplate(amber.New(amber.Config{})).Directory("./templates", ".amber")
+	app.Adapt(view.Amber("./templates", ".amber"))
 
-	iris.Get("/render_html", func(ctx *iris.Context) {
+	app.Get("/render_html", func(ctx *iris.Context) {
 		ctx.RenderWithStatus(iris.StatusOK, "hiHTML.html", map[string]interface{}{"Name": "You!"})
 	})
 
-	iris.Get("/render_amber", func(ctx *iris.Context) {
+	app.Get("/render_amber", func(ctx *iris.Context) {
 		ctx.MustRender("hiAMBER.amber", map[string]interface{}{"Name": "You!"})
 	})
 
 	println("Open a browser tab & go to localhost:8080/render_html  & localhost:8080/render_amber")
-	iris.Listen(":8080")
+	app.Listen(":8080")
 }
 
-// Iris examples covers the most part, including all 6 template engines and their configurations:
+// More can be found there:
 // https://github.com/iris-contrib/examples/tree/master/template_engines
